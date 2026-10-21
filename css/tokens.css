@@ -1,0 +1,214 @@
+/*
+ * TOKENS DE DISEÑO — Laboratorio virtual de ECG
+ * Disposición: banco de laboratorio en tres zonas (paciente | equipo y herramientas | panel de trabajo).
+ * Dirección visual: «banco de instrumentación». Fondo gris cálido de laboratorio, paneles claros,
+ * el equipo como instrumento grafito con pantalla oscura, y los cables con sus colores normalizados
+ * como principal acento de color. El papel milimetrado conserva su aspecto en ambos temas.
+ *
+ * Para cambiar colores o tipografía, edite solo este archivo.
+ */
+
+@font-face { font-family: 'IBM Plex Sans'; font-weight: 400; font-style: normal; font-display: swap; src: url('../assets/fuentes/IBMPlexSans-Regular-Latin1.woff2') format('woff2'); }
+@font-face { font-family: 'IBM Plex Sans'; font-weight: 500; font-style: normal; font-display: swap; src: url('../assets/fuentes/IBMPlexSans-Medium-Latin1.woff2') format('woff2'); }
+@font-face { font-family: 'IBM Plex Sans'; font-weight: 600; font-style: normal; font-display: swap; src: url('../assets/fuentes/IBMPlexSans-SemiBold-Latin1.woff2') format('woff2'); }
+@font-face { font-family: 'IBM Plex Mono'; font-weight: 400; font-style: normal; font-display: swap; src: url('../assets/fuentes/IBMPlexMono-Regular-Latin1.woff2') format('woff2'); }
+@font-face { font-family: 'IBM Plex Mono'; font-weight: 500; font-style: normal; font-display: swap; src: url('../assets/fuentes/IBMPlexMono-Medium-Latin1.woff2') format('woff2'); }
+@font-face { font-family: 'IBM Plex Mono'; font-weight: 600; font-style: normal; font-display: swap; src: url('../assets/fuentes/IBMPlexMono-SemiBold-Latin1.woff2') format('woff2'); }
+
+:root {
+  /* Superficies y tinta */
+  --fondo: #e8ebe6;
+  --superficie: #fbfbf9;
+  --superficie-2: #f1f3ef;
+  --linea: #d2d7d0;
+  --linea-fuerte: #b5bdb3;
+  --tinta: #1a2220;
+  --tinta-2: #4b5752;
+  --tinta-3: #5f6b66;
+
+  /* Acento (acciones principales) */
+  --acento: #0e6b6b;
+  --acento-hover: #0b5858;
+  --sobre-acento: #ffffff;
+  --acento-suave: #dcedea;
+  --foco: #1f5fc2;
+
+  /* Estados (semánticos, independientes del acento) */
+  --aviso: #6e3c00;
+  --aviso-fondo: #fff1d6;
+  --aviso-borde: #e7c584;
+  --error: #a3261b;
+  --error-fondo: #fde7e4;
+  --ok: #1f6b3a;
+  --ok-fondo: #e3f2e7;
+  --info-fondo: #e6f1ef;
+  --info: #10302d;
+
+  /* Anatomía */
+  --vista-fondo: #f3f1ed;
+  --piel: #e9dfd5;
+  --piel-borde: #a89584;
+  --hueso: #d6c5b4;
+  --hueso-borde: #b49f8b;
+  --reparo: #8c735f;
+  --guia: #6f7d77;
+  --corazon: rgba(192, 80, 77, 0.2);
+  --corazon-borde: rgba(160, 60, 58, 0.55);
+  --contorno-cable: #2b3134;
+  --electrodo: #ffffff;
+  --electrodo-borde: #7f8b86;
+  --pinza: #4a5458;
+  --objetivo: #0e6b6b;
+
+  /* Equipo (instrumento: igual en ambos temas) */
+  --equipo: #252b2d;
+  --equipo-borde: #3a4245;
+  --tecla: #353d40;
+  --tecla-hover: #414a4e;
+  --tecla-borde: #4a5458;
+  --tecla-tinta: #eef2f0;
+  --tecla-activa: #0e6b6b;
+  --pantalla: #071113;
+  --pantalla-tinta: #d3e5df;
+  --pantalla-tenue: #9fbdb5;
+  --rejilla-menor: #0f2729;
+  --rejilla-mayor: #1b4143;
+  --trazo: #63e6a0;
+  --pantalla-aviso: #ffd58a;
+  --pantalla-aviso-fondo: #3a2a0b;
+  --pantalla-ok: #7ee2a8;
+  --indicador-ok: #1c3a2e;
+  --indicador-ok-tinta: #d9f5e5;
+  --indicador-mal: #4a360f;
+  --indicador-mal-tinta: #ffe2a8;
+
+  /* Papel milimetrado (registro impreso y medición) */
+  --papel: #fff9f7;
+  --papel-menor: #f5d2ce;
+  --papel-mayor: #e9a39b;
+  --papel-trazo: #1b2320;
+  --papel-tinta: #5c2a24;
+  --cursor-a: #0e6b6b;
+  --cursor-b: #a84e06;
+
+  /* Herramientas de análisis (lazos del vector cardíaco y resaltado) */
+  --resalte: #a84e06;
+  --lazo-p: #7b3fa6;
+  --lazo-qrs: #1f5fc2;
+  --lazo-t: #0e6b6b;
+
+  /* Tipografía */
+  --letra: 'IBM Plex Sans', 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', sans-serif;
+  --letra-mono: 'IBM Plex Mono', ui-monospace, 'Cascadia Mono', Consolas, 'Liberation Mono', monospace;
+  --t-xs: 0.75rem;
+  --t-s: 0.8125rem;
+  --t-m: 0.875rem;
+  --t-base: 0.9375rem;
+  --t-l: 1.0625rem;
+  --t-xl: 1.25rem;
+
+  /* Forma */
+  --radio: 14px;
+  --radio-m: 10px;
+  --radio-p: 8px;
+  --sombra: 0 1px 2px rgba(20, 30, 28, 0.06), 0 8px 22px rgba(20, 30, 28, 0.07);
+  --sombra-equipo: 0 1px 0 #3a4245 inset, 0 12px 28px rgba(20, 30, 28, 0.22);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --fondo: #111614;
+    --superficie: #1a201e;
+    --superficie-2: #222927;
+    --linea: #313b37;
+    --linea-fuerte: #4a5651;
+    --tinta: #e5ebe8;
+    --tinta-2: #aab8b2;
+    --tinta-3: #95a39d;
+    --acento: #3aae9f;
+    --acento-hover: #4cc0b1;
+    --sobre-acento: #06201d;
+    --acento-suave: #18332f;
+    --foco: #7fb0ff;
+    --aviso: #ffd58a;
+    --aviso-fondo: #3a2a0b;
+    --aviso-borde: #6b4e1c;
+    --error: #ffb4a9;
+    --error-fondo: #3d1713;
+    --ok: #8edcab;
+    --ok-fondo: #12301f;
+    --info-fondo: #16302c;
+    --info: #cfe9e4;
+    --vista-fondo: #272d2b;
+    --piel: #d9ccbf;
+    --piel-borde: #8e7b6c;
+    --hueso: #c3b2a2;
+    --hueso-borde: #9c8877;
+    --reparo: #6b5545;
+    --guia: #8fa39b;
+    --corazon: rgba(220, 110, 105, 0.24);
+    --corazon-borde: rgba(220, 120, 115, 0.6);
+    --contorno-cable: #e5ebe8;
+    --electrodo: #f4f4f0;
+    --electrodo-borde: #5c6762;
+    --pinza: #39434a;
+    --objetivo: #3aae9f;
+    --equipo: #1c2123;
+    --equipo-borde: #333b3e;
+    --cursor-a: #0e6b6b;
+    --cursor-b: #a84e06;
+    --resalte: #f0a35a;
+    --lazo-p: #c39be6;
+    --lazo-qrs: #8db8ff;
+    --lazo-t: #4cc0b1;
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme='dark'] {
+  --fondo: #111614;
+  --superficie: #1a201e;
+  --superficie-2: #222927;
+  --linea: #313b37;
+  --linea-fuerte: #4a5651;
+  --tinta: #e5ebe8;
+  --tinta-2: #aab8b2;
+  --tinta-3: #95a39d;
+  --acento: #3aae9f;
+  --acento-hover: #4cc0b1;
+  --sobre-acento: #06201d;
+  --acento-suave: #18332f;
+  --foco: #7fb0ff;
+  --aviso: #ffd58a;
+  --aviso-fondo: #3a2a0b;
+  --aviso-borde: #6b4e1c;
+  --error: #ffb4a9;
+  --error-fondo: #3d1713;
+  --ok: #8edcab;
+  --ok-fondo: #12301f;
+  --info-fondo: #16302c;
+  --info: #cfe9e4;
+  --vista-fondo: #272d2b;
+  --piel: #d9ccbf;
+  --piel-borde: #8e7b6c;
+  --hueso: #c3b2a2;
+  --hueso-borde: #9c8877;
+  --reparo: #6b5545;
+  --guia: #8fa39b;
+  --corazon: rgba(220, 110, 105, 0.24);
+  --corazon-borde: rgba(220, 120, 115, 0.6);
+  --contorno-cable: #e5ebe8;
+  --electrodo: #f4f4f0;
+  --electrodo-borde: #5c6762;
+  --pinza: #39434a;
+  --objetivo: #3aae9f;
+  --equipo: #1c2123;
+  --equipo-borde: #333b3e;
+  --cursor-a: #0e6b6b;
+  --cursor-b: #a84e06;
+  --resalte: #f0a35a;
+  --lazo-p: #c39be6;
+  --lazo-qrs: #8db8ff;
+  --lazo-t: #4cc0b1;
+  color-scheme: dark;
+}

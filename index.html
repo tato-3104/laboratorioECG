@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Laboratorio virtual de ECG</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Laboratorio virtual de electrocardiografía: procedimiento de registro del ECG de 12 derivaciones con un electrocardiógrafo simulado. Señales sintéticas con fines educativos.">
+<link rel="icon" href="assets/icono.svg" type="image/svg+xml">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+<div class="app" id="app">
+
+  <header class="barra">
+    <div class="barra-marca">
+      <svg class="marca-icono" viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="9"></rect><path d="M5 22 H13 L16 16 L19 28 L23 8 L26 22 H35"></path></svg>
+      <div class="marca-texto">
+        <span class="marca-nombre">Laboratorio virtual de electrocardiografía</span>
+        <span class="marca-sub">Sistemas fisiológicos · Universidad Tecnológica de Pereira</span>
+      </div>
+    </div>
+    <div class="barra-derecha">
+      <span class="chip chip-aviso" title="Las señales las genera un modelo matemático con fines educativos. No es un dispositivo médico ni sirve para diagnóstico.">Señal sintética · no diagnóstica</span>
+      <button type="button" class="boton boton-sec" id="btn-ayuda">Cómo usar</button>
+    </div>
+  </header>
+
+  <nav class="pestanas-moviles" aria-label="Secciones">
+    <button type="button" data-zona="paciente" aria-pressed="false">Paciente</button>
+    <button type="button" data-zona="equipo" aria-pressed="false">Equipo</button>
+    <button type="button" data-zona="panel" aria-pressed="true">Procedimiento</button>
+  </nav>
+
+  <main class="banco">
+
+    <!-- ===================== PACIENTE ===================== -->
+    <section class="zona zona-paciente tarjeta" id="zona-paciente" aria-labelledby="t-paciente">
+      <div class="zona-cabecera">
+        <h2 id="t-paciente">Paciente</h2>
+        <div class="segmentado" role="group" aria-label="Vista anatómica">
+          <button type="button" data-vista="cuerpo" aria-pressed="true">Cuerpo</button>
+          <button type="button" data-vista="torax" aria-pressed="false">Tórax</button>
+        </div>
+      </div>
+
+      <div class="vista-anatomica" id="contenedor-vista"></div>
+      <p class="ayuda" id="leyenda-torax" hidden>LME: línea medioesternal · LMC: línea medioclavicular · LAA: línea axilar anterior · LAM: línea axilar media · 2.º a 6.º: espacios intercostales.</p>
+
+      <div class="opciones-vista">
+        <label class="casilla"><input type="checkbox" id="chk-referencias" checked> Referencias anatómicas</label>
+        <label class="casilla"><input type="checkbox" id="chk-corazon"> Mostrar corazón</label>
+      </div>
+
+      <p class="estado-paciente" id="estado-paciente" role="status">Arrastre un electrodo de la bandeja al paciente.</p>
+
+      <div class="bloque">
+        <h3 class="bloque-titulo">Bandeja de electrodos</h3>
+        <div class="bandeja">
+          <button type="button" class="pieza" id="bandeja-pinza" data-tipo="pinza" aria-describedby="ayuda-arrastre">
+            <svg viewBox="0 0 40 24" aria-hidden="true"><rect x="4" y="5" width="32" height="14" rx="5" class="pieza-pinza"></rect><path d="M10 12 H30" class="pieza-linea"></path></svg>
+            <span>Pinzas <strong id="cuenta-pinza">4</strong></span>
+          </button>
+          <button type="button" class="pieza" id="bandeja-adhesivo" data-tipo="adhesivo" aria-describedby="ayuda-arrastre">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" class="pieza-adhesivo"></circle><circle cx="12" cy="12" r="3.5" class="pieza-broche"></circle></svg>
+            <span>Adhesivos <strong id="cuenta-adhesivo">6</strong></span>
+          </button>
+        </div>
+        <p class="ayuda" id="ayuda-arrastre">Arrastre, o pulse Intro y use las flechas para ubicar; Intro para soltar y Esc para cancelar. Un electrodo colocado se mueve arrastrándolo y se retira soltándolo fuera del cuerpo.</p>
+      </div>
+
+      <div class="bloque">
+        <h3 class="bloque-titulo">Cables del paciente</h3>
+        <ul class="cables" id="lista-cables" aria-label="Terminales del cable de paciente"></ul>
+        <p class="ayuda">Código de colores AHA. Arrastre cada terminal hasta su electrodo; el botón «×» lo desengancha.</p>
+      </div>
+    </section>
+
+    <!-- ===================== EQUIPO ===================== -->
+    <section class="zona zona-equipo" id="zona-equipo" aria-labelledby="t-equipo">
+      <h2 id="t-equipo" class="solo-lector">Electrocardiógrafo</h2>
+      <div class="equipo">
+        <div class="equipo-superior">
+          <div class="conexion-paciente" id="conexion-paciente">
+            <button type="button" class="clavija" id="btn-conector" aria-pressed="false" aria-describedby="ayuda-conector">
+              <svg viewBox="0 0 64 28" aria-hidden="true"><path class="clavija-cable" d="M0 14 H30"></path><rect class="clavija-cuerpo" x="26" y="4" width="26" height="20" rx="4"></rect><rect class="clavija-punta" x="52" y="8" width="10" height="12" rx="2"></rect></svg>
+              <span class="solo-lector">Clavija del cable de paciente</span>
+            </button>
+            <div class="puerto" id="puerto-paciente" aria-hidden="true">
+              <svg viewBox="0 0 44 32"><rect class="puerto-marco" x="1" y="1" width="42" height="30" rx="5"></rect><rect class="puerto-hueco" x="8" y="9" width="28" height="14" rx="3"></rect></svg>
+              <span class="puerto-texto">PACIENTE</span>
+            </div>
+            <span class="estado-conector" id="txt-conector">Cable de paciente desconectado</span>
+          </div>
+          <button type="button" class="encendido" id="btn-encendido" aria-pressed="false">
+            <span class="led" aria-hidden="true"></span><span id="txt-encendido">Apagado</span>
+          </button>
+        </div>
+        <p class="solo-lector" id="ayuda-conector">Arrastre la clavija hasta el conector PACIENTE del equipo, o púlsela para conectarla o desconectarla.</p>
+
+        <div class="pantalla" id="pantalla">
+          <div class="pantalla-cabecera">
+            <span id="pantalla-paciente">SUJETO</span>
+            <span id="pantalla-estado">MONITOR</span>
+            <span class="pantalla-fc"><svg viewBox="0 0 16 14" aria-hidden="true"><path d="M8 13 C3 9 0 6.5 0 3.8 C0 1.7 1.7 0 3.8 0 C5.6 0 6.9 1 8 2.6 C9.1 1 10.4 0 12.2 0 C14.3 0 16 1.7 16 3.8 C16 6.5 13 9 8 13 Z"></path></svg><span id="pantalla-fc">--- lpm</span></span>
+            <span class="pantalla-hora" id="pantalla-hora">--:--:--</span>
+          </div>
+          <div class="pantalla-mensaje" id="pantalla-mensaje" role="status" aria-live="polite"></div>
+          <div class="pantalla-trazos" id="pantalla-trazos">
+            <canvas id="lienzo-ecg" aria-hidden="true"></canvas>
+            <p class="solo-lector" id="resumen-pantalla" aria-live="off"></p>
+          </div>
+          <div class="pantalla-pie" id="pantalla-pie"></div>
+        </div>
+
+        <ul class="indicadores" id="indicadores" aria-label="Estado de los electrodos"></ul>
+
+        <div class="teclas">
+          <button type="button" class="tecla tecla-principal" id="btn-congelar" aria-pressed="false">Congelar</button>
+          <button type="button" class="tecla" id="btn-imprimir">Imprimir</button>
+          <button type="button" class="tecla" id="btn-1mv">1 mV</button>
+          <button type="button" class="tecla" id="btn-linea-base">Restablecer línea base</button>
+          <button type="button" class="tecla" id="btn-paciente">Paciente</button>
+        </div>
+
+        <div class="ajustes">
+          <label class="ajuste">Formato
+            <select id="sel-formato"></select>
+          </label>
+          <label class="ajuste" id="ajuste-derivacion" hidden>Derivación
+            <select id="sel-derivacion"></select>
+          </label>
+          <label class="ajuste">Velocidad
+            <select id="sel-velocidad"></select>
+          </label>
+          <label class="ajuste">Ganancia
+            <select id="sel-ganancia"></select>
+          </label>
+          <p class="filtros-fijos" id="filtros-fijos"></p>
+        </div>
+        <p class="equipo-modelo">Electrocardiógrafo virtual · 6 canales · 12 derivaciones</p>
+      </div>
+
+      <!-- Herramientas -->
+      <section class="herramientas tarjeta" aria-label="Herramientas de análisis">
+        <div class="pestanas" role="tablist" aria-label="Herramientas">
+          <button type="button" role="tab" id="tab-cursores" aria-controls="herr-cursores" aria-selected="true" data-herramienta="cursores">Cursores</button>
+          <button type="button" role="tab" id="tab-registros" aria-controls="herr-registros" aria-selected="false" data-herramienta="registros">Registros</button>
+          <button type="button" role="tab" id="tab-ecuaciones" aria-controls="herr-ecuaciones" aria-selected="false" data-herramienta="ecuaciones">Ecuaciones</button>
+          <button type="button" role="tab" id="tab-vector" aria-controls="herr-vector" aria-selected="false" data-herramienta="vector">Vector cardíaco</button>
+          <button type="button" role="tab" id="tab-fundamentos" aria-controls="herr-fundamentos" aria-selected="false" data-herramienta="fundamentos">Fundamentos</button>
+        </div>
+        <div class="panel-herramienta" role="tabpanel" id="herr-cursores" aria-labelledby="tab-cursores"></div>
+        <div class="panel-herramienta" role="tabpanel" id="herr-registros" aria-labelledby="tab-registros" hidden></div>
+        <div class="panel-herramienta" role="tabpanel" id="herr-ecuaciones" aria-labelledby="tab-ecuaciones" hidden></div>
+        <div class="panel-herramienta" role="tabpanel" id="herr-vector" aria-labelledby="tab-vector" hidden></div>
+        <div class="panel-herramienta fundamentos" role="tabpanel" id="herr-fundamentos" aria-labelledby="tab-fundamentos" hidden>
+          <section>
+            <h3>Electrodo, cable y derivación</h3>
+            <p>Un <strong>electrodo</strong> es el sensor que toca la piel. El <strong>cable</strong> lleva su potencial a una <strong>entrada</strong> del equipo, identificada por la etiqueta del terminal (RA, LA…). Una <strong>derivación</strong> es una diferencia de potencial que el equipo calcula combinando entradas. El equipo no sabe dónde está cada electrodo: si los cables se intercambian, calcula con lo que recibe.</p>
+          </section>
+          <section>
+            <h3>Plano frontal: Einthoven y Goldberger</h3>
+            <pre class="ecuacion">I   = Φ(LA) − Φ(RA)
+II  = Φ(LL) − Φ(RA)
+III = Φ(LL) − Φ(LA)          → II = I + III
+
+aVR = Φ(RA) − [Φ(LA) + Φ(LL)] / 2
+aVL = Φ(LA) − [Φ(RA) + Φ(LL)] / 2
+aVF = Φ(LL) − [Φ(RA) + Φ(LA)] / 2   → aVR + aVL + aVF = 0</pre>
+            <p>Cada derivación aumentada compara un miembro con el promedio de los <strong>otros dos</strong> electrodos del triángulo de Einthoven, no con las piernas. El término «unipolar» es tradicional, pero la referencia es compuesta.</p>
+          </section>
+          <section>
+            <h3>Plano horizontal: terminal central de Wilson</h3>
+            <pre class="ecuacion">TCW = [Φ(RA) + Φ(LA) + Φ(LL)] / 3
+Vi  = Φ(Vi) − TCW</pre>
+            <p>Las precordiales dependen también de RA, LA y LL: si falta un electrodo de extremidad, el equipo pierde V1–V6.</p>
+          </section>
+          <section>
+            <h3>El electrodo RL</h3>
+            <p>RL (pierna derecha) no entra en ninguna ecuación. Es la referencia del amplificador: mantiene el cuerpo cerca del potencial del equipo, reduce la tensión de modo común y, con ella, la interferencia de la red eléctrica (60 Hz). Muchos equipos lo usan también para detectar electrodos sueltos.</p>
+          </section>
+          <section>
+            <h3>Ubicación de los electrodos</h3>
+            <ul>
+              <li>Extremidades: muñecas y tobillos, con los contactos hacia la cara interna. A lo largo de un miembro el potencial casi no cambia.</li>
+              <li>Ángulo esternal (de Louis): allí se une la 2.ª costilla; debajo está el 2.º espacio intercostal.</li>
+              <li>V1 y V2: 4.º espacio intercostal, a la derecha y a la izquierda del esternón.</li>
+              <li>V4: 5.º espacio intercostal, línea medioclavicular. V3: entre V2 y V4.</li>
+              <li>V5 y V6: líneas axilar anterior y media, en el plano horizontal de V4 (AHA/ACCF/HRS, 2007).</li>
+            </ul>
+          </section>
+          <section>
+            <h3>Filtros del equipo</h3>
+            <p>El equipo trabaja en modo diagnóstico con filtros fijos: paso alto de 0,05 Hz (quita la deriva lenta de la línea de base sin deformar el segmento ST), paso bajo de 150 Hz (conserva la amplitud del QRS) y filtro de ranura de 60 Hz contra la interferencia de la red eléctrica. La ranura es muy estrecha: atenúa la interferencia, pero no elimina sus armónicos ni compensa la falta del electrodo RL. Cada vez que cambia una conexión, el paso alto tarda unos segundos en devolver el trazado a la línea de base.</p>
+          </section>
+          <section>
+            <h3>Sobre esta simulación</h3>
+            <p>Las señales son sintéticas: un vector cardíaco con morfología normal proyectado con la matriz de Dower. Las inversiones de cables se calculan con las mismas ecuaciones del equipo. Los efectos de los electrodos precordiales mal ubicados y de la interferencia son aproximaciones cualitativas. No es un dispositivo médico ni sirve para diagnóstico.</p>
+          </section>
+        </div>
+      </section>
+    </section>
+
+    <!-- ===================== PROCEDIMIENTO ===================== -->
+    <aside class="zona zona-panel tarjeta" id="zona-panel" aria-labelledby="t-panel">
+      <div class="panel-titulo">
+        <span class="eyebrow">Práctica de laboratorio</span>
+        <h2 id="t-panel">Procedimiento</h2>
+        <p class="panel-intro">Siga los pasos junto con la guía del estudiante. Cada paso se marca cuando el laboratorio detecta que lo realizó; la marca no dice si los electrodos están bien ubicados.</p>
+        <div class="progreso" id="progreso" role="progressbar" aria-valuemin="0" aria-valuemax="17" aria-valuenow="0" aria-label="Avance del procedimiento">
+          <div class="progreso-barra"><span id="progreso-relleno"></span></div>
+          <span class="progreso-texto" id="progreso-texto">0 de 17 pasos</span>
+        </div>
+      </div>
+
+      <div class="acciones-procedimiento">
+        <button type="button" class="boton" id="btn-revisar" aria-controls="resultado-revision" aria-expanded="false">Revisar montaje</button>
+        <button type="button" class="boton boton-sec" id="btn-retirar-todo">Retirar todos los electrodos</button>
+      </div>
+      <div id="resultado-revision" class="resultado" role="status" hidden></div>
+
+      <ol class="procedimiento" id="lista-procedimiento" aria-label="Pasos del procedimiento"></ol>
+      <p class="solo-lector" id="anuncio-procedimiento" aria-live="polite"></p>
+    </aside>
+  </main>
+
+  <footer class="pie">
+    <p>Laboratorio virtual de electrocardiografía · Sistemas fisiológicos, Universidad Tecnológica de Pereira. Señales sintéticas con fines exclusivamente educativos: no es un dispositivo médico ni una herramienta de diagnóstico.</p>
+  </footer>
+</div>
+
+<!-- ===================== DIÁLOGOS ===================== -->
+<dialog class="dialogo" id="dlg-paciente" aria-labelledby="t-dlg-paciente">
+  <form method="dialog" id="form-paciente" class="formulario">
+    <h2 id="t-dlg-paciente">Datos del registro</h2>
+    <div class="ficha-sujeto">
+      <span class="ficha-titulo">Sujeto</span>
+      <span id="ficha-voluntario">Hombre, 21 años · sujeto virtual sano</span>
+    </div>
+    <label class="campo">Su nombre
+      <input type="text" id="in-nombre" maxlength="60" autocomplete="name" required>
+    </label>
+    <p class="ayuda">Su nombre aparece en cada registro impreso. El sexo del sujeto define el umbral de QTc de referencia (440 ms en hombres, 460 ms en mujeres).</p>
+    <div class="fila-botones fila-final">
+      <button type="submit" class="boton boton-sec" value="cancelar" formnovalidate>Cancelar</button>
+      <button type="submit" class="boton" value="guardar" id="btn-guardar-paciente">Guardar</button>
+    </div>
+  </form>
+</dialog>
+
+<dialog class="dialogo dialogo-registro" id="dlg-registro" aria-labelledby="t-dlg-registro">
+  <div class="registro-barra">
+    <h2 id="t-dlg-registro">Registro impreso</h2>
+    <div class="fila-botones">
+      <button type="button" class="boton boton-sec" id="btn-reg-analizar">Medir con cursores</button>
+      <button type="button" class="boton boton-sec solo-web" id="btn-reg-png">Descargar PNG</button>
+      <button type="button" class="boton boton-sec solo-web" id="btn-reg-pdf">Guardar como PDF</button>
+      <button type="button" class="boton" id="btn-reg-cerrar">Cerrar</button>
+    </div>
+  </div>
+  <p class="ayuda aviso-registro" id="aviso-registro" hidden></p>
+  <p class="ayuda solo-vista-previa">En el archivo del laboratorio (laboratorio-ecg.html), este registro se puede descargar en PNG o guardar como PDF a escala real.</p>
+  <div class="registro-paginas" id="registro-paginas"></div>
+</dialog>
+
+<dialog class="dialogo" id="dlg-ayuda" aria-labelledby="t-dlg-ayuda">
+  <div class="formulario">
+    <h2 id="t-dlg-ayuda">Cómo usar el laboratorio</h2>
+    <ol class="pasos-ayuda">
+      <li><strong>Procedimiento.</strong> Siga los pasos del panel «Procedimiento» (en el teléfono, la pestaña del mismo nombre) junto con la guía del estudiante. Cada paso se marca cuando el laboratorio detecta que lo realizó.</li>
+      <li><strong>Electrodos y cables.</strong> Arrastre pinzas a muñecas y tobillos, y electrodos adhesivos al tórax (la vista «Tórax» muestra costillas y espacios intercostales). Después arrastre cada terminal del cable de paciente hasta su electrodo. Un electrodo colocado se mueve arrastrándolo y se retira soltándolo fuera del cuerpo.</li>
+      <li><strong>Revisar montaje.</strong> Equivale a pedirle al docente que revise la colocación: dice si el montaje es correcto y, si lo pide, qué está mal. Su resultado no se actualiza solo. El equipo, como uno real, solo avisa de los electrodos sueltos.</li>
+      <li><strong>Registro.</strong> «Imprimir» guarda los últimos 20 s en papel milimetrado (pestaña «Registros»). Para que el registro corresponda a una sola conexión, espere 20 s después de cualquier cambio. «Congelar» detiene la pantalla. Mida sobre los registros con la herramienta «Cursores».</li>
+      <li><strong>Teclado.</strong> Todas las piezas se pueden mover con el teclado: Tab para elegir, Intro para tomar, flechas para ubicar, Intro para soltar y Esc para cancelar.</li>
+    </ol>
+    <p class="ayuda" id="aviso-almacenamiento"></p>
+    <div class="bloque reinicio">
+      <h3 class="bloque-titulo">Empezar de nuevo</h3>
+      <p class="ayuda">Borra los registros, el avance del procedimiento y el montaje guardados en este navegador. No se puede deshacer: descargue antes los registros que necesite.</p>
+      <div class="fila-botones">
+        <button type="button" class="boton boton-sec boton-peligro" id="btn-reiniciar">Borrar todo y empezar de nuevo</button>
+      </div>
+      <div class="fila-botones" id="confirmar-reinicio" hidden>
+        <span class="ayuda">¿Seguro?</span>
+        <button type="button" class="boton boton-peligro-solido" id="btn-reiniciar-si">Sí, borrar todo</button>
+        <button type="button" class="boton boton-sec" id="btn-reiniciar-no">No</button>
+      </div>
+    </div>
+    <div class="fila-botones fila-final">
+      <button type="button" class="boton" id="btn-cerrar-ayuda">Entendido</button>
+    </div>
+  </div>
+</dialog>
+
+<div class="impresion" id="impresion" aria-hidden="true"></div>
+<div class="solo-lector" id="anuncios" aria-live="polite"></div>
+<div class="aviso-flotante" id="aviso-flotante" role="status" hidden></div>
+
+<script type="module" src="src/main.js"></script>
+</body>
+</html>
